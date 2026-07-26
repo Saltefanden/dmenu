@@ -291,6 +291,12 @@ match(void)
 	}
 	curr = sel = matches;
 
+	if (single_keypress && matches && lprefix) {
+		puts(matches->text);
+		cleanup();
+		exit(0);
+	}
+
 	if (instant && matches && matches==matchend && !lsubstr) {
 		puts(matches->text);
 		cleanup();
@@ -776,6 +782,8 @@ main(int argc, char *argv[])
 			fstrstr = cistrstr;
 		} else if (!strcmp(argv[i], "-n")) /* instant select only match */
 			instant = 1;
+        else if (!strcmp(argv[i], "-s")) /* Single keypress select */
+            single_keypress = 1;
 		else if (i + 1 == argc)
 			usage();
 		/* these options take one argument */
